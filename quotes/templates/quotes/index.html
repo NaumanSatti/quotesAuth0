@@ -96,13 +96,7 @@ width:auto; }
    </article>
    
   {% endfor %}
-  <article class="media">
-    <div class="media-content">
-      <div class="content has-text-centered">
-        <p>That's All.</p>
-      </div>
-    </div>
-  </article>
+ 
 
 
 
@@ -117,4 +111,43 @@ width:auto; }
   </article>
 {% endif %}
 
+{% if response %}
+<article class="media mt-5">
+  <div class="media-content">
+    <div class="content">
+      <p>
+        <strong>SHARED QUOTES LIST (From API)</strong> 
+        
+        <br>
+       </p>
+    </div>
+  </div>
+  </article>
+
+  {% for r in response %}
+    <article class="media mt-5">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ r.authorName }}</strong> 
+           
+            <br>
+           <i>"{{ r.text}}"</i>
+          </p>
+        </div>
+      </div>
+      
+   </article>
+   
+  {% endfor %}
+
+  {% endif %}
+
+  <article class="media">
+    <div class="media-content">
+      <div class="content has-text-centered">
+        <p>That's All.</p>
+      </div>
+    </div>
+  </article>
 {% endblock content%}

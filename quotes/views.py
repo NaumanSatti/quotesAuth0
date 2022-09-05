@@ -5,11 +5,16 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .models import Quote
 from .forms import QuoteForm
+import requests
 
 # Create your views here.
 
 def index(request):
+
+    response= requests.get('https://acf-ts-quotes-api-kfu8a.ondigitalocean.app/api/quotes').json()
     
+    response1 = response.get('results')
+   
     if request.method=='POST':
 
         form=QuoteForm(request.POST)
@@ -37,6 +42,7 @@ def index(request):
     
             context={
                 'posts':quotes,
+                'response':response1,
                 }
             return render(request, 'quotes/index.html', context=context)
 
@@ -47,8 +53,10 @@ def index(request):
     context={
         'form':form,
         'posts':quotes,
+        
     }
     return render(request, 'quotes/index.html', context=context)
+
 
 
 @login_required
