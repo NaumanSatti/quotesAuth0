@@ -1,0 +1,120 @@
+{% extends 'quotes/base.html' %}
+{% load humanize %}
+{% block title %} HOME{% endblock title %}
+{% block main_title %} QUOTES{% endblock main_title %}
+
+{% block sub_title %} {% if user.is_authenticated %}Leave a quote for everyone to see.{% else %} See What others have to Say. Login To Post Yours.
+{% endif %}
+{% endblock sub_title %}
+{% block style %}
+<style>
+    #myForm select { 
+width:200px; }
+
+#myForm select:focus {
+width:auto; }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<form method="POST">
+  <article class="media">
+    <div class="media-content">
+      <div class="field">
+        <p class="control">
+          {% csrf_token %}
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input type="text" placeholder="Enter Quote" required style="width:95%; height:40px;" name="quote">
+            </div>
+            <div class="control">
+              <button class="button is-info">Submit</button>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+  </article>
+</form>
+
+
+<form method="GET">
+    <article class="media">
+      <div class="media-content">
+        <div class="field">
+          <p class="control">
+            {% csrf_token %}
+            <div class="field has-addons">
+              <div class="control is-expanded" >
+                <label for="quotes">Filter Quotes:</label>
+                <div id=myForm>
+                <select id="cars" name="quotes" >
+                <option value="all">All Quotes</option>
+                <option value="personal">My Quotes</option>
+                
+                </select>
+                </div>    
+            </div>
+              <div class="control">
+                
+              </div>
+            </div>
+          </p>
+        </div>
+      </div>
+    </article>
+    <button class="button is-danger">Filter</button>
+  </form>
+  
+
+{% endif %}
+
+{% if posts %}
+  {% for post in posts %}
+    <article class="media mt-5">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ post.user.first_name }} {{ post.user.last_name }}</strong> 
+            <small>{{ post.date_posted|naturaltime }}</small> 
+            <br>
+           <i>"{{ post.quote}}"</i>
+          </p>
+        </div>
+      </div>
+      {% if post.user == request.user %}
+        <div class="media-right">
+          <a href="{% url 'deletequote' post.pk %}" class="delete" onclick="return confirm('Are you sure, want to delete this quote?')"></a>
+        </div>
+        <div class="media-right">
+            <a href="{% url 'editquote' post.pk %}"><span class="tag is-success">Edit</span></a>
+        </div>
+      
+      {% endif %}
+   </article>
+   
+  {% endfor %}
+  <article class="media">
+    <div class="media-content">
+      <div class="content has-text-centered">
+        <p>That's All.</p>
+      </div>
+    </div>
+  </article>
+
+
+
+  
+{% else %}
+  <article class="media">
+    <div class="media-content">
+      <div class="content has-text-centered">
+        <p>There are no quotes.</p>
+      </div>
+    </div>
+  </article>
+{% endif %}
+
+{% endblock content%}

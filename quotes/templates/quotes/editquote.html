@@ -1,0 +1,33 @@
+{% extends 'quotes/base.html' %}
+{% load humanize %}
+{% block title %} HOME{% endblock title %}
+{% block main_title %} EDIT QUOTE ( "{{quote.quote}}" ){% endblock main_title %}
+
+{% block sub_title %} {% if user.is_authenticated %}Looks like you made a mistake. Let's Edit it{% else %} See What others have to Say. Login To Post Yours.
+{% endif %}
+{% endblock sub_title %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<form method="POST">
+  <article class="media">
+    <div class="media-content">
+      <div class="field">
+        <p class="control">
+          {% csrf_token %}
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input type="text" placeholder="Enter Quote" required style="width:95%; height:40px;" name="quote" value="{{quote.quote}}">
+            </div>
+            <div class="control">
+              <button class="button is-danger">Edit</button>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+  </article>
+</form>
+{% endif %}
+
+{% endblock content %}
