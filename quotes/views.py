@@ -57,7 +57,7 @@ def logout(request):
     django_logout(request)
     domain= settings.SOCIAL_AUTH_AUTH0_DOMAIN
     client_id= settings.SOCIAL_AUTH_AUTH0_KEY
-    return_to='http://naumanquotessh.herokuapp.com'
+    return_to='https://naumanquotessh.herokuapp.com'
     return redirect(f'https://{domain}/v2/logout?client_id={client_id}&returnTo={return_to}')
 
 @login_required
