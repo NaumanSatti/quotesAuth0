@@ -1,0 +1,1 @@
+web: gunicorn qAuth0.wsgi --log-file - 
